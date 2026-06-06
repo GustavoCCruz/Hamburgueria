@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cardápio Hamburgueria</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffcc70, #ff8177);
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      color: #fff;
+      font-size: 3em;
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .item {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s;
+    }
+    .item:hover {
+      transform: translateY(-5px);
+    }
+    .item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .info {
+      padding: 20px;
+    }
+    .info h3 {
+      margin: 0;
+      font-size: 1.5em;
+      color: #333;
+    }
+    .info p {
+      color: #666;
+      margin: 10px 0;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 12px 20px;
+      background: #25D366;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #128C7E;
+    }
+    .pedido {
+      text-align: center;
+      margin-top: 30px;
+    }
+    select, input {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <h1>🍔 Nosso Cardápio</h1>
+    <div class="grid">
+      <div class="item">
+        <img src="Copilot_20260605_214156.png" alt="Cheeseburger Clássico">
+        <div class="info">
+          <h3>Cheeseburger Clássico</h3>
+          <p>Pão, carne 150g, queijo cheddar, alface, tomate e molho especial.</p>
+          <input type="checkbox" value="Cheeseburger Clássico"> Selecionar
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="Copilot_20260605_214205.png" alt="Smash Bacon">
+        <div class="info">
+          <h3>Smash Bacon</h3>
+          <p>Dois smash burgers, queijo, bacon crocante e maionese da casa.</p>
+          <input type="checkbox" value="Smash Bacon"> Selecionar
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="Copilot_20260605_214213.png" alt="Veggie Burger">
+        <div class="info">
+          <h3>Veggie Burger</h3>
+          <p>Burger de grão-de-bico, queijo vegano, rúcula e molho de ervas.</p>
+          <input type="checkbox" value="Veggie Burger"> Selecionar
+        </div>
+      </div>
+    </div>
+
+    <div class="pedido">
+      <label for="entrega">Tipo de entrega:</label>
+      <select id="entrega">
+        <option value="Retirada no local">Retirada no local</option>
+        <option value="Entrega em domicílio">Entrega em domicílio</option>
+      </select>
+      <br>
+      <button class="btn" onclick="enviarPedido()">Enviar Pedido</button>
+    </div>
+  </div>
+
+  <script>
+    function gerarNumeroPedido() {
+      return 'PED' + Math.floor(Math.random() * 100000);
+    }
+
+    function enviarPedido() {
+      const selecionados = Array.from(document.querySelectorAll('input[type=checkbox]:checked'))
+        .map(item => item.value);
+      const entrega = document.getElementById('entrega').value;
+      const numeroPedido = gerarNumeroPedido();
+
+      if (selecionados.length === 0) {
+        alert('Selecione pelo menos um item!');
+        return;
+      }
+
+      const mensagem = `Pedido ${numeroPedido}%0AItens:%0A- ${selecionados.join('%0A- ')}%0AEntrega: ${entrega}`;
+      const telefone = '5516982348382';
+      window.open(`https://wa.me/${telefone}?text=${mensagem}`, '_blank');
+    }
+  </script>
+</body>
+</html>
