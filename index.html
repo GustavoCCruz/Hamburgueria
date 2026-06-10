@@ -11,19 +11,19 @@
       padding: 0;
     }
     .menu {
-      max-width: 900px;
+      max-width: 1200px;
       margin: auto;
-      padding: 40px;
+      padding: 20px;
     }
     h1 {
       text-align: center;
       color: #fff;
-      font-size: 3em;
-      margin-bottom: 30px;
+      font-size: 2.5em;
+      margin-bottom: 20px;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
     }
     .item {
@@ -38,20 +38,25 @@
     }
     .item img {
       width: 100%;
-      height: 180px;
+      height: 200px;
       object-fit: cover;
     }
     .info {
-      padding: 20px;
+      padding: 15px;
     }
     .info h3 {
       margin: 0;
-      font-size: 1.5em;
+      font-size: 1.4em;
       color: #333;
     }
     .info p {
       color: #666;
-      margin: 10px 0;
+      margin: 8px 0;
+    }
+    .price {
+      font-weight: bold;
+      color: #e63946;
+      font-size: 1.1em;
     }
     .btn {
       display: inline-block;
@@ -63,6 +68,7 @@
       border-radius: 8px;
       font-weight: bold;
       transition: background 0.3s;
+      cursor: pointer;
     }
     .btn:hover {
       background: #128C7E;
@@ -78,6 +84,32 @@
       border: none;
       font-size: 1em;
     }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+      .item img {
+        height: 160px;
+      }
+      .info h3 {
+        font-size: 1.2em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu {
+        padding: 10px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+      .btn {
+        width: 100%;
+        padding: 14px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -89,7 +121,8 @@
         <div class="info">
           <h3>Cheeseburger Clássico</h3>
           <p>Pão, carne 150g, queijo cheddar, alface, tomate e molho especial.</p>
-          <input type="checkbox" value="Cheeseburger Clássico"> Selecionar
+          <p class="price">R$ 28,00</p>
+          <input type="checkbox" value="Cheeseburger Clássico" data-preco="28"> Selecionar
         </div>
       </div>
 
@@ -98,7 +131,8 @@
         <div class="info">
           <h3>Smash Bacon</h3>
           <p>Dois smash burgers, queijo, bacon crocante e maionese da casa.</p>
-          <input type="checkbox" value="Smash Bacon"> Selecionar
+          <p class="price">R$ 34,00</p>
+          <input type="checkbox" value="Smash Bacon" data-preco="34"> Selecionar
         </div>
       </div>
 
@@ -107,7 +141,8 @@
         <div class="info">
           <h3>Veggie Burger</h3>
           <p>Burger de grão-de-bico, queijo vegano, rúcula e molho de ervas.</p>
-          <input type="checkbox" value="Veggie Burger"> Selecionar
+          <p class="price">R$ 30,00</p>
+          <input type="checkbox" value="Veggie Burger" data-preco="30"> Selecionar
         </div>
       </div>
     </div>
@@ -129,17 +164,21 @@
     }
 
     function enviarPedido() {
-      const selecionados = Array.from(document.querySelectorAll('input[type=checkbox]:checked'))
-        .map(item => item.value);
-      const entrega = document.getElementById('entrega').value;
-      const numeroPedido = gerarNumeroPedido();
-
+      const selecionados = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
       if (selecionados.length === 0) {
         alert('Selecione pelo menos um item!');
         return;
       }
 
-      const mensagem = `Pedido ${numeroPedido}%0AItens:%0A- ${selecionados.join('%0A- ')}%0AEntrega: ${entrega}`;
+      const entrega = document.getElementById('entrega').value;
+      const numeroPedido = gerarNumeroPedido();
+      let total = 0;
+      const itens = selecionados.map(item => {
+        total += parseFloat(item.dataset.preco);
+        return `${item.value} - R$ ${item.dataset.preco},00`;
+      });
+
+      const mensagem = `Pedido ${numeroPedido}%0AItens:%0A- ${itens.join('%0A- ')}%0ATotal: R$ ${total},00%0AEntrega: ${entrega}`;
       const telefone = '5516982348382';
       window.open(`https://wa.me/${telefone}?text=${mensagem}`, '_blank');
     }
